@@ -1,0 +1,26 @@
+Java -> OOP language.
+
+Multi tasking -> multiple tasks run at a time
+Multi threading -> running different modules or programs at a time in the whole code without wasting time.
+
+RMI(remote method invocation = can call method of object in other machine i.e., JVM), EJB (Enterprise java beans)
+Strut(Framework extension of servlets API), spring boot 
+java applet (Applets were used to provide interactive features to web applications that historically could not be provided by HTML alone)
+
+Data types.
+///////// (IN datatypes document)
+Char, Byte, Short, Int, long, Float, double, Boolean, String
+
+keywords: (day 1 document)
+/////////
+final, var
+
+OOPs:
+/////// (day 1 document)
+Abstraction, Encapsulation, Inheritance, Polymorphism
+
+Classes -> User defined datatypes, which is a group of variables (data members) and Functions (member methods)
+
+For a class (class = user defined datatype) to use we need to declare a object with that class. (object(variable) is an instance for class).
+
+Stopped in day 1 -> search with keyword "chaitanya"
