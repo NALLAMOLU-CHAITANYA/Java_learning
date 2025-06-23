@@ -82,7 +82,7 @@ Participate in LeetCode, HackerRank (2–3 problems/week)
 
 
 # short List:
-////////////
+
 ## Week 1
 Session 1: Java OOPS Fundamentals
 ● Understand the fundamentals of Java OOPS concepts like
