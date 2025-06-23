@@ -1,5 +1,5 @@
-Topics:
-### Basic :
+# Topics:
+## Basic :
 Data types, variables, operators
 
 Control flow: if-else, switch, loops
@@ -14,7 +14,7 @@ Exception handling
 
 Basic file I/O
 
-### Intermediate
+## Intermediate
 Collections framework (List, Set, Map, Queue)
 
 Generics
@@ -33,7 +33,7 @@ Lambda expressions and functional interfaces (Java 8+)
 
 Java Date & Time API
 
-### Advanced
+## Advanced
 Multithreading and concurrency
 
 Synchronization, wait-notify, Executor framework
@@ -48,7 +48,7 @@ Reflection API
 
 JVM internals (memory management, garbage collection basics)
 
-### proj in real world:
+## proj in real world:
 Java with JDBC (Database access)
 
 Introduction to Servlets and JSP (for legacy understanding)
@@ -63,7 +63,7 @@ Spring MVC
 
 Spring Data JPA
 
-### Adv proj
+## Adv proj
 RESTful Web Services using Spring Boot
 
 Unit testing with JUnit and Mockito
@@ -81,9 +81,9 @@ Database-backed application with JDBC or JPA
 Participate in LeetCode, HackerRank (2–3 problems/week)
 
 
-short List:
+# short List:
 ////////////
-Week 1
+## Week 1
 Session 1: Java OOPS Fundamentals
 ● Understand the fundamentals of Java OOPS concepts like
 Objects, Classes, Inheritance, Polymorphism, Abstraction, and
@@ -96,7 +96,7 @@ with practical examples
 ● Explore Functional Interfaces, Lambda Expressions
 ● Use Generics and Streams to write efficient code
 ● Work with Java Collections for efficient data management
-Week 2
+## Week 2
 Session 3: Multithreading & HashMap
 ● Delve into the workings of HashMap
 ● Understand the concepts of Multithreading, such as Thread
@@ -109,7 +109,7 @@ Session 4: Maven for Project Management
 and their types
 ● Understand the Maven Lifecycle for efficient project
 management
-Week 3
+## Week 3
 Session 5: Spring Boot Basics
 ● Learn the basics of Server and Client models
 CONTENTS
@@ -123,7 +123,7 @@ Session 6: REST API & Spring MVC
 ● Learn to work with POSTMAN and CURL for API testing
 ● Understand Annotations and Lombok
 ● Explore the Spring MVC framework
-Week 4
+## Week 4
 Session 7: Spring IOC & Dependency Injection
 ● Learn about the Spring IOC container, Dependency Injection, and
 Enums
@@ -136,7 +136,7 @@ Storage
 Server
 ● Create Request Classes
 ● Perform validations using JDBC
-Week 5
+## Week 5
 Session 9: JPA & Hibernate
 ● Understand the need for an abstraction layer between DAO and
 Database
@@ -149,7 +149,7 @@ Language)
 ● Learn about relationships in JPA
 ● Work on a Digital Library [Minor Project]
 ● Create a project flowchart
-Week 6
+## Week 6
 Session 11: Digital Library [Minor Project] (Continued)
 ● Continue working on the Digital Library [Minor Project]
 ● Understand project HLSD
@@ -159,7 +159,7 @@ Session 12: Unit Testing with JUnit & Mockito
 ● Parse CSV files with Spring Boot
 ● Understand the importance of Unit Testing with JUnit and
 Mockito
-Week 7
+## Week 7
 Session 13: Redis & Caching
 ● Get introduced to Redis
 ● Learn the differences between Cache and Cookie
@@ -173,7 +173,7 @@ Credentials
 ● Understand Authorization with In-Memory
 ● Database user Authentication
 CONTENTS
-Week 8
+## Week 8
 Session 15: Digital Library [Minor Project] (Continued)
 ● Improvement and feature addition for Digital Library [Minor
 Project]
@@ -185,7 +185,7 @@ Session 16: OAuth 2 & Github Integration
 ● Learn the workflow of OAuth 2.0
 ● Explore Scopes and Consent
 ● Implement Github OAuth2 integration with Spring Boot
-Week 9
+## Week 9
 Session 17: Microservies
 ● Difference between Monolith Architecture and Microservices
 Architecture
@@ -201,7 +201,7 @@ systems.
 ● Introduction to Spring Cloud and its configuration & hystrix circuit
 breaker
 CONTENTS
-Week 10
+## Week 10
 Session 19: E-Wallet App like Paytm [Major Project Part 1]
 ● Start working on E-Wallet App like Paytm
 ● Project Overview
