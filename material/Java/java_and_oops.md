@@ -91,13 +91,37 @@ Note:
 
 Note: default fn in an interface is introduced in java. It has implementation to add common functionality to all classes impletenting that interface. It is static fn.
 
-## Functional interface
+## Functional interface (Go through day 2 document when there is time)
 
-An interface having only one abstract method.
+An interface having only one abstract method. Ways to implement functional interfaces:
+1. Overriding
+2. Lambda
+3. Method references (easy form of lambda functions)
 
+Types of Method references
+1. Reference to a static method
+2. Reference to a Instance method
+3. Reference to a constructor
 
+Functional interface Can have default or static methods (they don’t count as abstract).
+Can be annotated with @FunctionalInterface (optional but recommended).
+Enables functional programming in Java.
+Works well with Streams API, Collections, and parallel processing. (go in detail when you have time)
 
-functional interfaces -> stopped in day2
-learn about concrete class /////////////////////////////
+## Nested classes (later in day 2)
 
-should complete the exception handling
+## Anonymous inner class (later in day 2)
+
+## Exception handling
+
+-> To handle runtime errors/exceptions we use exception handling.
+-> These are errors at runtime. Exception is also created as an object. All exceptions are pre-defined classes. 
+-> Throwable is a superclass and exception class is a subclass. 
+-> IOException, SQLException, ArithmeticException are subclass for exception class.
+
+There are 2 types of exceptions:
+1. Built in exception (checked exception and unchecked exception) (flow diag. in day 2 doc)
+2. User defined exception
+
+-> Exceptions which must be take care is known called checked exception (compile time exceptions). Mandatorily developer should add. compiler asks to handle in IDE itself.
+-> 

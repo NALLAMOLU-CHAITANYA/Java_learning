@@ -19,3 +19,11 @@ if (obj instanceof String) { ... } -> Checks whether an object is an instance of
 | **`java.lang.Character`**     | `java.lang` | Wrapper for `char`, immutable.                                              |
 | **`java.util.Collections`**   | `java.util` | Utility class — only **static methods** — no reason to extend.              |
 | **`java.util.Optional`**      | `java.util` | Designed to be immutable holder of objects — no extension allowed.          |
+
+
+
+
+
+# TODO
+learn about concrete class
+Scanner class, Buffer reader class, file reader class.
