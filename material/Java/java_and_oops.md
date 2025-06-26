@@ -116,12 +116,32 @@ Works well with Streams API, Collections, and parallel processing. (go in detail
 
 -> To handle runtime errors/exceptions we use exception handling.
 -> These are errors at runtime. Exception is also created as an object. All exceptions are pre-defined classes. 
--> Throwable is a superclass and exception class is a subclass. 
+-> Throwable is a superclass of all exceptions and errors ,    and exception class is a subclass. 
 -> IOException, SQLException, ArithmeticException are subclass for exception class.
 
 There are 2 types of exceptions:
-1. Built in exception (checked exception and unchecked exception) (flow diag. in day 2 doc)
+1. Built in exception (checked exception and unchecked exception) (classification diag. in day 2 doc)
 2. User defined exception
 
 -> Exceptions which must be take care is known called checked exception (compile time exceptions). Mandatorily developer should add. compiler asks to handle in IDE itself.
--> 
+-> If the object is simple obj then it is not your responsibility to close the obj. But if the obj is holding resources like files, socket or connection we need to close that in the catch block or finally block.
+
+-> try, catch, finally, throw, throws
+
+-> throw : Used to explicitly throw an exception. syntax: throw new IllegalArgumentException("Invalid input");
+-> throws: Declares an exception may be thrown by a method. syntax: public void readFile() throws IOException { code }
+
+
+###### Flow of exception raising and catching in catch block
+Base Class: In Java, Throwable is the base class for all errors and exceptions. 
+Throwing: When an exceptional condition occurs (e.g., a file not found, a division by zero), a Throwable object is created and "thrown" using the throw keyword. 
+Handling: Throwable objects can be caught and handled using try-catch blocks, allowing the program to recover from the error or exception and continue execution instead of crashing. 
+
+-> Stack Trace: When a Throwable is created, it captures the current execution stack, providing information about where the error occurred.
+
+## Java assestions:
+
+-> While testing they use this. While code is pushed to production assertion will be removed.
+-> syntax: assert condition;
+-> assertion exception is raised to check a bug if we have a feeling.
+-> If the condition is true the build is successful. If the condition is false it will raise assertion exception and code will be stopped execution and exit.

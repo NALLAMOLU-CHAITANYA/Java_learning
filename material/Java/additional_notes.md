@@ -21,9 +21,41 @@ if (obj instanceof String) { ... } -> Checks whether an object is an instance of
 | **`java.util.Optional`**      | `java.util` | Designed to be immutable holder of objects — no extension allowed.          |
 
 
+Note:
+
+### Difference b/w List<Integer> = new ArrayList<> (); and ArrayList<Integer> = new ArrayList<> ();
+
+1. List<Integer> list = new ArrayList<>();
+
+You're declaring a variable of type List, and assigning it an object of type ArrayList.
+You can easily switch to another implementation (like LinkedList, Vector, etc.) later without changing the variable type.
+
+Example:
+List<Integer> list = new ArrayList<>();
+list = new LinkedList<>(); // ✅ Valid
+
+2. ArrayList<Integer> list = new ArrayList<>();
+
+Here you're tying the variable to a concrete implementation (ArrayList).
+You can’t switch to another list type without changing the variable type.
+
+Example:
+ArrayList<Integer> list = new ArrayList<>();
+list = new LinkedList<>(); // ❌ Compile-time error
+
+| Feature                               | `List<Integer> list = new ArrayList<>();` | `ArrayList<Integer> list = new ArrayList<>();`     |
+| ------------------------------------- | ----------------------------------------- | -------------------------------------------------- |
+| Programming style                     | Interface-based (recommended)             | Implementation-based                               |
+| Flexibility to change list type       | ✅ Yes                                     | ❌ No                                               |
+| Supports polymorphism                 | ✅ Yes                                     | ❌ No                                               |
+| Can access ArrayList-specific methods | ❌ No (only List methods visible)          | ✅ Yes (like `trimToSize()`)                        |
+| Best practice?                        | ✅ Yes (more maintainable)                 | ❌ Only use when ArrayList-specific behavior needed |
 
 
 
 # TODO
 learn about concrete class
 Scanner class, Buffer reader class, file reader class.
+learn about the datatypes in the java
+how arraylist increases and deceases in size and internal working
+Solve problem using hashset in arrya list (ArrayList<Hahset<>>)
