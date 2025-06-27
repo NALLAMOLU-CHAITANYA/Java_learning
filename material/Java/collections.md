@@ -123,6 +123,9 @@ Notes: (do research about this when you have time, info about the memory numbers
 -> Calling remove() without next() → throws IllegalStateException.
 -> Modifying the list directly during iteration (like list.remove()) → throws ConcurrentModificationException.
 
+## Stack class: (comes under list interface)
+Push(), pop(), peek(), search(), empty(), 
+Ex: https://www.geeksforgeeks.org/stack-class-in-java/
 
 
 
@@ -132,4 +135,38 @@ Notes: (do research about this when you have time, info about the memory numbers
 ## Set Interface:
 -> All methods in list interfaces can be used in set interface.
 
--> complete set and map interface tomorrow
+## Queue Interface:
+-> Linked list also implements queue interface.
+
+-> Methods in queue:
+Add() : Adds an element to the rear of the queue. If the queue is full, it throws an exception.
+Offer(element): Adds an element to the rear of the queue. If the queue is full, it returns false.
+remove(): Removes and returns the element at the front of the queue. If the queue is empty, it throws an exception.
+poll(): Removes and returns the element at the front of the queue. If the queue is empty, it returns null.
+element(): Returns the element at the front of the queue without removing it. If the queue is empty, it throws an exception.
+peek(): Returns the element at the front of the queue without removing it. If the queue is empty, it returns null.
+
+## Map Interface:
+-> data stored in key, value format.
+-> Methods in Map are:
+put(k,v), putAll(anotherMap), putIfAbsent(k,v), get(k), keySet(): to get all keys as a set, values(), remove(k), remove(k,v), containsKey(k), containsValue(v).
+
+-> No, a standard Map implementation in Java (like HashMap or TreeMap) does not allow duplicate keys. If you attempt to put a key-value pair into a map where the key already exists, the new value will simply overwrite the old value associated with that key. 
+
+## Java 11 features:
+
+day 3 docs
+
+
+## Lambda Expressions:
+-> Used to implement functional interface.
+day3 doc
+
+## Java streams:
+-> day 3 docs
+-> we can avoid loops and if conditions using stream class.
+
+
+day 3: Java IO (input stream, output stream), Buffered stream, 
+
+day 4 : JDBC, Mutithreading
