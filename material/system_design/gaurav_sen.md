@@ -27,6 +27,8 @@ Differences:
 | scales well as users increase.                           |      Hardware limit                |
 
 
-2. Capacity planning and estimation: main topic in doc
+2. Capacity planning and estimation: main topic in doc. We are expected to find these:
 
-
+-> Estimate how much storage utube needs per day to store the videos uploaded by uploaders?
+-> Estimate how much cache do you need to show the most popular videos in youtube?
+-> Estimate number of processors required to process the videos that are to be uploaded?
