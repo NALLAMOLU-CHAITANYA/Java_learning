@@ -1,7 +1,7 @@
 package material.dsa.code.recursion;
 //  https://leetcode.com/problems/valid-palindrome/description/
 public class isPalindrome {
-    public boolean isPalindrome(String s) {
+    public boolean isPalindromeOrNot(String s) {
         return helper(s, 0, s.length() - 1);
     }
 
