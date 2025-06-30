@@ -1,16 +1,10 @@
-1. "Grokking Algorithms" by Aditya Bhargava
-Best for: Beginners
-
-Why it helps: Uses visuals and simple language to teach recursion. Covers recursion through divide & conquer examples (like merge sort, quicksort).
-
-Backtracking: Introduced lightly via problems like subset sum and shortest paths.
 
 2. "Elements of Programming Interviews" (EPI) by Aziz, Lee, Prakash
 Best for: Intermediate to Advanced
 
 Why it helps: Has many recursive/backtracking problems like permutations, combinations, Sudoku, N-Queens, etc.
 
-Languages: Java, Python, C++ editions available.
+Languages: Java, Python, C++ editions available. System design and all coding related problems are also there. Very useful book.
 
 3. "Cracking the Coding Interview" by Gayle Laakmann McDowell
 Best for: Interview preparation
