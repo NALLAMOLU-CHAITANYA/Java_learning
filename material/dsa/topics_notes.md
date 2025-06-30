@@ -8,7 +8,7 @@ How to solve any coding question:
 6. Time and space complexity with solution
 7. check time and space complexity with constraints.
 8. Identify edge cases, identify data types
-9. At last code.
+9. At last code. (Before doing the fair code write psuedo code and run for one test case***)
 
 
 example problem:
@@ -42,3 +42,20 @@ Big o -> method to calculate time complexity.
 space conplexity tips:
 try to allocate the variables in the functions or loops bcz as soon as one iteration is over that old variables are deallocated.
 10^9 bytes = 1 GB
+
+
+## Recursion:
+
+Programming paradigm which solves any problem by solving smaller instances of the exact same problem
+
+Steps to achieve recursion:
+1.	Assumption
+2.	main logic
+3.	base condition
+
+First form the recurrance relation (if terms are decreasing in each level) or recurrance tree (if terms are increasing in each level). -> we can derive the time complexity.
+ex : sum of n natural numbers  -> recurrance relation :  T(n)=1+T(n-1)
+
+Given a recurrance relation, you should say the time complexity -> ex in notes. (most important)
+
+books based on recursion:
