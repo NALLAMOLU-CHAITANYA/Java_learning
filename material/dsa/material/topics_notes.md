@@ -58,4 +58,20 @@ ex : sum of n natural numbers  -> recurrance relation :  T(n)=1+T(n-1)
 
 Given a recurrance relation, you should say the time complexity -> ex in notes. (most important)
 
-books based on recursion:
+books based on recursion: in recursion_notes.md file.
+
+
+### Sorting in increasing order: (heap, quick, java inbuilt sort = tim sort)
+
+1. Bubble sort -> N^2, 1  (Take the biggest element in array to the right and continue doing it in loop)
+2. Selection sort -> N^2 , 1  (getting the min element from the entire array and keeping in the left(current index))
+3. Insertion sort -> N^2,1    (iteration i->0toN and taking left array and keeping the current element(i) at its position) (*going from left to right and keeping every element at its place)
+4. Count sort  -> R+N, R  (it maintains the array with the size of difference of highest and lowest element) (useful when the elements are having less difference range) (if range is not mentioned don`t use count sort)
+5. Merge sort ->  NlogN,N   (uses divide and conquer algo(with recursion) + 2 pointer algorithm) (divides the array into 2 parts and it sorts left part and right part and then merges both the arrays into tmp and then tmp is copied to the original array)  (**best sort as it reduces time complexity**)
+
+
+
+### Searching :
+
+1. linear search -> O(n) (works on sorted and unsorted)
+2. Binary search -> O(logN) (for sorted array only)

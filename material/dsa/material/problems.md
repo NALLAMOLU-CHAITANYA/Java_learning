@@ -21,4 +21,16 @@ FAANG questions -> in whatsapp need to see and note down here.
 
 ### Recursion questions:
 
-1.
+1. come back and write
+
+### Sorting in increasing order: (heap, quick, java inbuilt sort = tim sort)
+
+1. Count an array of 0's and 1's  -> can solve using count sort
+
+2. Given an array and sum k. Check if there exists any pair of elements whose sum is k.    ->  n^2,1   and    nlongn + N, N (sort using merge sort and then use 2 pointer to find the sum)
+
+3. count how many pairs of elements exists which : i<j and A[i] > A[j] where i,j are indexes.   ->   N^2,1  and   NlogN,N (Merge sort and while merging at last count no.of elements which satisfy this condition)
+
+
+### searching :
+
