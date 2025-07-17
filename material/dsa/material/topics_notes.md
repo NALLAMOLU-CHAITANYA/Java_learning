@@ -78,7 +78,9 @@ books based on recursion: in recursion_notes.md file.
  
 
 ### hasing
-Hashing is a technique used to map data of arbitrary size to fixed-size values using a function called a hash function
+Hashing is a technique used to map data of arbitrary size to fixed-size values using a function called a hash function.
+
+**Hashing is used to solve searching, insertion, and lookup problems efficiently. It allows near-constant time operations, making it extremely useful in a wide range of real-world computing tasks.**
 
 in this mainly we have two things 
 1. hash function - A function that converts input data into a fixed-size hash value.
@@ -87,6 +89,46 @@ in this mainly we have two things
 we have one problem here that is **collision**. Collision means that for 2 diff i/p getting the same hash value in result.
 
 #### Collision resolution techniques:
-1. Open addressing (linear probing, quadritic probing)
+1. Open addressing (linear probing - (x+i)%10 , quadritic probing - (x+i^2)%N)
 2. seperate chaining (linked list, BBST)
+
+
+| Probing Method    | Clustering Type          | Description                                          |
+| ----------------- | ------------------------ | ---------------------------------------------------- |
+| Linear Probing    | **Primary Clustering**   | Long runs of occupied slots attract more collisions. |
+| Quadratic Probing | **Secondary Clustering** | Only keys with same original hash form a cluster.    |
+| Double Hashing    | **Minimal Clustering**   | Uses a second hash function to reduce clustering.    |
+
+
+
+**why to use hashing**
+Fast Access in dbs
+O(1) average time complexity for insert/search/delete in hash tables.
+
+Much faster than linear search (O(n)) or binary search (O(log n)).
+
+Efficient Memory Usage
+Can store large datasets efficiently in a key-value format.
+
+Only stores values at calculated indices — no need for large contiguous memory.
+
+Uniqueness & Data Integrity
+Hashes can uniquely represent data.
+
+Used to check if two files or strings are the same (e.g., file integrity).
+
+Security
+Cryptographic hashing ensures passwords and messages aren't stored/transmitted in plaintext.
+
+Common in digital signatures, blockchain, password storage.
+
+Avoid Duplicates
+Hash sets (e.g., HashSet in Java) can efficiently remove or detect duplicates.
+
+#### points to remember
+**Java uses Separate Chaining with Linked Lists and (since Java 8) Balanced Trees (Red-Black Trees) when chains get too long.**
+
+
+**we are storing the hash values in hash table and finding whether the key is there or not**. So thats why we cant have duplicate keys in hash table. If the problem has duplicates keys don't use hashmap.
+
 
