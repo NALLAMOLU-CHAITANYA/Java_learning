@@ -77,7 +77,7 @@ books based on recursion: in recursion_notes.md file.
 2. Binary search -> O(logN) (for sorted array only)
  
 
-### hasing
+### Hashing
 Hashing is a technique used to map data of arbitrary size to fixed-size values using a function called a hash function.
 
 **Hashing is used to solve searching, insertion, and lookup problems efficiently. It allows near-constant time operations, making it extremely useful in a wide range of real-world computing tasks.**
@@ -92,14 +92,25 @@ we have one problem here that is **collision**. Collision means that for 2 diff 
 1. Open addressing (linear probing - (x+i)%10 , quadritic probing - (x+i^2)%N)
 2. seperate chaining (linked list, BBST)
 
-
+##### 1. Open Addressing:
+   
 | Probing Method    | Clustering Type          | Description                                          |
 | ----------------- | ------------------------ | ---------------------------------------------------- |
 | Linear Probing    | **Primary Clustering**   | Long runs of occupied slots attract more collisions. |
 | Quadratic Probing | **Secondary Clustering** | Only keys with same original hash form a cluster.    |
 | Double Hashing    | **Minimal Clustering**   | Uses a second hash function to reduce clustering.    |
 
+More in notes
 
+##### Seperate chaining
+
+1. linked list: if we have multiple i/ps have same hash values then they are stored in one linked list which the index will be pointing to.
+2. BBST: Similar to linked list but here we have to store the items in a balanced BST if collision happens.
+
+Note: There is memory issue with linked list approach as it stores 2 values. one is value and other is pointer to the next node. 
+
+
+#### points to remember:
 
 **why to use hashing**
 Fast Access in dbs
@@ -125,10 +136,12 @@ Common in digital signatures, blockchain, password storage.
 Avoid Duplicates
 Hash sets (e.g., HashSet in Java) can efficiently remove or detect duplicates.
 
-#### points to remember
+
 **Java uses Separate Chaining with Linked Lists and (since Java 8) Balanced Trees (Red-Black Trees) when chains get too long.**
 
 
 **we are storing the hash values in hash table and finding whether the key is there or not**. So thats why we cant have duplicate keys in hash table. If the problem has duplicates keys don't use hashmap.
 
+Always go with good hash function. Which distribute keys more evenly accross the table and efficient to compute.
 
+Write the templates for this **
