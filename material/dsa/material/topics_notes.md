@@ -75,3 +75,18 @@ books based on recursion: in recursion_notes.md file.
 
 1. linear search -> O(n) (works on sorted and unsorted)
 2. Binary search -> O(logN) (for sorted array only)
+ 
+
+### hasing
+Hashing is a technique used to map data of arbitrary size to fixed-size values using a function called a hash function
+
+in this mainly we have two things 
+1. hash function - A function that converts input data into a fixed-size hash value.
+2. hash table - A data structure that stores key-value pairs using hashing for fast lookup.
+
+we have one problem here that is **collision**. Collision means that for 2 diff i/p getting the same hash value in result.
+
+#### Collision resolution techniques:
+1. Open addressing (linear probing, quadritic probing)
+2. seperate chaining (linked list, BBST)
+
