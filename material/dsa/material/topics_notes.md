@@ -145,3 +145,9 @@ Hash sets (e.g., HashSet in Java) can efficiently remove or detect duplicates.
 Always go with good hash function. Which distribute keys more evenly accross the table and efficient to compute.
 
 Write the templates for this **
+
+
+#### Hashing on strings:
+(E str[i]*(p^i+1))%size   -  good hash fun (p=take a nice prime number)
+
+
