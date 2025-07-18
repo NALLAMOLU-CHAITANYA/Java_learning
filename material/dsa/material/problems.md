@@ -36,8 +36,28 @@ FAANG questions -> in whatsapp need to see and note down here.
 later
 
 
+### Hashing Problems:
+
+1. 
+2. 
+3. 
+
+### String prob:
+
+1. Toggle the case of each letter in the string.
+2. Check if 2 strings are anagrams or not. (letters and no.of letters should match not the order) (can hadle in string hasing).
+3. Find the length of longest palindromic substring  ->  n*n*n,1  and  n*n,1
+4. Calculate the length of smallest substring in A containing all the characters of string B.  ->  many ways in notes.
+5. Count the no.of anagramic groups in a group of strings. -> notes (write code template to sort the string and group of strings)
 
 
-### Good problems:
-1. Calculate the length of largest subarray whose elements can be rearranged in contiguos order - Multiple ways in notes.
 
+### General problems:
+1. Calculate the length of largest subarray whose elements can be rearranged in contiguos order - Multiple ways in notes. (before string hashing topic)
+
+2. carry forward sum.
+
+3. Rotate the array in clockwise direction d times ->  n*d,1  and  n+n,n  and  n,1
+
+4. print(sum(a[i:j])) for q no.of queries ->  q*n,1 and  n+q,n and  n+q,1
+  

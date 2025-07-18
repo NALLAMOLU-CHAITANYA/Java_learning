@@ -1,7 +1,7 @@
 How to solve any coding question:
 
 1. read and understand the problem statement
-2. sample I/O
+2. sample I/O -> Write it down in the notes to perform actions in the notes.
 3. Constraints
 4. Think of approaches (spend 70 percent of time here)
 5. validate the solution with sample I/O test cases
@@ -148,6 +148,7 @@ Write the templates for this **
 
 
 #### Hashing on strings:
-(E str[i]*(p^i+1))%size   -  good hash fun (p=take a nice prime number)
+(E str[i]*(p^i+1))%size   -  good hash fun (p=take a prime number)
 
+Note ascii values of a-z and A-Z and string numbers
 
