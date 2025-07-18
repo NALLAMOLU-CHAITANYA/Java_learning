@@ -33,4 +33,11 @@ FAANG questions -> in whatsapp need to see and note down here.
 
 
 ### searching :
+later
+
+
+
+
+### Good problems:
+1. Calculate the length of largest subarray whose elements can be rearranged in contiguos order - Multiple ways in notes.
 
