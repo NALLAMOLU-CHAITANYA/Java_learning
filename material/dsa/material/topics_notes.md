@@ -1,3 +1,11 @@
+Approach decide:
+1. Think in terms of binary search (hard for me)
+2. Think interms of prefix and sufix hash / cnt array.ss
+3. Strings -> hashing
+4. Reccursive way or backtracking.
+
+
+
 How to solve any coding question:
 
 1. read and understand the problem statement
@@ -8,7 +16,7 @@ How to solve any coding question:
 6. Time and space complexity with solution
 7. check time and space complexity with constraints.
 8. Identify edge cases, identify data types
-9. At last code. (Before doing the fair code write psuedo code and run for one test case***)
+9. At last code. (Before doing the fair code write psuedo code on paper and run for one test case***)
 
 
 example problem:

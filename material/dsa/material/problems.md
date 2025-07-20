@@ -50,6 +50,23 @@ later
 4. Calculate the length of smallest substring in A containing all the characters of string B.  ->  many ways in notes.
 5. Count the no.of anagramic groups in a group of strings. -> notes (write code template to sort the string and group of strings)
 
+### String hash problems:
+fair later if time is there.
+
+
+### Nice problems:
+
+1. Count the primes upto N  -> sieve of eratosthenes -> Maintain a list upto n, then iterate each element factor upto root of n.
+2. count the primes from a to b  ->  segmented Sieve.
+3. Check if there exists any subset with sum k ->  in notes (using meet in the middle approach -> some what better than bit manip & back track)
+4. Given q operations, in each op given x element should place from i to j and add each time and print the final array (1) or print the total sum  ->  1. q*n,1 and q,1   2. q*n,1 and q+n,1
+5. Form ans array such that each element of ans arr is equal to product of all the elements of i/p array exluding ith element  ->  n^2,1  and  n+n,1 ( whole product / A[i] -> 2 edge cases handle then this approach is better (1 zero, 2 zeroes))  and   n+n+n,n+n (calculate forward product, back product)
+6. search for an element in sorted data but rotated array   ->   n,1   and   logn+logn,1 (BS on point of rotation + BS on only one part of the 2 sorted parts)
+7. sorted array containing only positive integers. Find the first positive missing number    ->   n,1  and  logn,1
+8. Length of longest subarray containing equal os and 1s  -> n^3,1 and n^2,1 and n+n,n
+9. Given 3 arrays . Pick one element from each array such that range of elements is minimum (need 2 elements from 2 diff arrays)- >  n^3,1 and 
+10. 
+
 
 
 ### General problems:
@@ -60,4 +77,14 @@ later
 3. Rotate the array in clockwise direction d times ->  n*d,1  and  n+n,n  and  n,1
 
 4. print(sum(a[i:j])) for q no.of queries ->  q*n,1 and  n+q,n and  n+q,1
-  
+
+
+
+
+
+
+
+
+
+Game theory -> read last if time is there. (2 pages)
+write a template to generate all the subsets of the given array
