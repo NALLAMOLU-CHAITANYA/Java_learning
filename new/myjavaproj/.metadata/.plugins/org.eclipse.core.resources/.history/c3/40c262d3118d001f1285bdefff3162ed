@@ -1,0 +1,567 @@
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.net.URLEncoder;
+import java.security.KeyFactory;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Base64;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.nimbusds.jose.JOSEObjectType;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
+
+//import com.skire.apns.ProxyHttpClient;
+
+import com.skire.form.dynabean.JSONParser;
+import com.skire.form.dynabean.MapWrapper;
+
+
+public class IDCSSAMLTest3 {
+
+	// Unifier instance
+	
+    static String UNIFIER_SERVER = "https://dev4-unifier.oraclecloud.com";
+
+    static String IDCS_SERVER = "https://idcs-c84e293836e340ea95fc2da8dca4ad9b.identity.pint.oc9qadev.com";
+    static  String USER_SUBJECT ="$$chnallam";
+    static  String CLIENT_SUBJECT ="74502968235f4c43a522f50bb3fc4dc1";
+    //new client app Chaitanya tenant id and secret
+    //static  String CLIENT_ID = "5916752a300343d38131e8a96ee2e13d";
+    //static  String CLIENT_SECRET = "8a112947-e589-47a8-b47c-90dc0a70170b";
+    
+    static  String CLIENT_ID = "Primavera_WTSS_LANNCHAITOFC1_APPID";
+    static  String CLIENT_SECRET = "6b778c4b-e3f0-4aca-83ec-72fdd4930a98";
+    
+    //static String SCOPE = "https://dev4-unifier.oraclecloud.com/lannchaitofc/ws/rest";   // not working
+    static String SCOPE = "urn:opc:idm:__myscopes__";    
+    //static String SCOPE = "urn:opc:resource:consumer::all";
+    static String USERNAME = "$$chnallam";
+    static String PASSWORD = "Manager1";
+    //static String USERNAME = "tien.wang@oracle.com";
+    //static String PASSWORD = "Pa$$word!123";
+    static String CERT_ALIAS = "jwtPublicCertificate"; 
+    static  String JTI = "00e07b335b3a4d88b30b59d22237db18";
+    static String PRIVATE_KEY_PATH= "C:/Users/chnallam/Documents/jwt_private_key.pem";
+    
+    
+    static String CC_GRANT = "client_credentials";
+    static String PASSWORD_GRANT = "password";
+    static String JWT_USER_GRANT = "urn:ietf:params:oauth:grant-type:jwt-bearer";
+    static String JWT_CC_GRANT   = "urn:ietf:params:oauth:grant-type:jwt-bearer";
+    static  String idcsTokenEndpoint =IDCS_SERVER+ "/oauth2/v1/token";
+    static String AUD="https://identity.oraclecloud.com/";
+    static final String ADMINUSER_ENDPOINT = "/lannchaitofc/ws/rest/service/v1/admin/user/get";
+    
+   
+    public static void main(String[] args) throws Exception {
+       
+    	testConection("password");  //works
+
+    	//testConection("client_credentials"); //not working
+    	
+    	//testConection("jwt_cc"); //working
+    	
+    	testConection("jwt_user"); //works
+    	
+    	//testConection("jwt_user_nosig"); //claim without signature
+ 
+  
+    }
+
+    private static RSAPrivateKey loadPrivateKey(String privateKeyFilePath) throws Exception {
+    	 StringBuilder keyContent = new StringBuilder();
+         String line=null;
+    	try {
+    		BufferedReader br = new BufferedReader(new FileReader(privateKeyFilePath));
+            while ((line = br.readLine()) != null) {
+                if (!line.startsWith("-----BEGIN PRIVATE KEY-----") && !line.startsWith("-----END PRIVATE KEY-----")) {
+                    keyContent.append(line);
+                }
+            }
+            byte[] keyBytes = Base64.getDecoder().decode(keyContent.toString());
+            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+        return null;
+    }
+/*
+    private static RSAPrivateKey loadPrivateKey(String privateKeyFilePath) throws Exception {
+        // Implement this method to load your private key from a file
+        // and return it as an RSAPrivateKey
+        // Example: Read the private key from a PEM file
+        // ...
+        // Return the RSAPrivateKey
+    	try (FileInputStream fis = new FileInputStream(privateKeyFilePath);
+                PemReader reader = new PemReader(fis)) {
+
+               PemObject pemObject = reader.readPemObject();
+               byte[] content = pemObject.getContent();
+               
+               PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(content);
+               KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+               
+               return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
+           } catch (IOException e) {
+               throw new Exception("Failed to load private key: " + e.getMessage());
+           }
+       }
+    	
+        return null;
+    }
+*/
+    private static SignedJWT createJWTAssertion(String clientId, RSAPrivateKey privateKey, String subject) throws Exception {
+        // Create a JWT Claims Set
+        Date now = new Date();
+        long expirationTime = now.getTime() + TimeUnit.MINUTES.toMillis(60); // Set the expiration time to 60 minutes from now
+        JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
+                .issuer(clientId)
+                .subject(subject)
+                .audience(AUD)
+                .jwtID(JTI)
+                .expirationTime(new Date(expirationTime))
+                .issueTime(now)
+                .build();
+
+        // Create a JWS header
+        JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.RS256)
+                .keyID(CERT_ALIAS) // ID of your private key
+                .type(JOSEObjectType.JWT)
+                .build();
+
+        // Sign the JWT with the private key
+        JWSSigner signer = new RSASSASigner(privateKey);
+        SignedJWT signedJWT = new SignedJWT(jwsHeader, claimsSet);
+        signedJWT.sign(signer);
+        return signedJWT;
+        
+    }
+    
+    
+    private static String createJWTAssertion2(String clientId, RSAPrivateKey privateKey, String subject) throws Exception {
+        // Create a JWT Claims Set
+        Date now = new Date();
+        long expirationTime = now.getTime() + TimeUnit.MINUTES.toMillis(60); // Set the expiration time to 60 minutes from now
+        JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
+                .issuer(clientId)
+                .subject(subject)
+                .audience(AUD)
+                .jwtID(JTI)
+                .expirationTime(new Date(expirationTime))
+                .issueTime(now)
+                .build();
+
+        // Create a JWS header
+        JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.RS256)
+                .keyID(CERT_ALIAS) // ID of your private key
+                .type(JOSEObjectType.JWT)
+                .build();
+
+        
+        String returnString = Base64.getEncoder().encodeToString(jwsHeader.toString().getBytes()) + "." +
+        		Base64.getEncoder().encodeToString(claimsSet.toString().getBytes())+"." ;
+
+        return returnString;
+    }
+    
+    private static String createBasicAuthHeader(String clientId, String clientSecret) {
+        String credentials = clientId + ":" + clientSecret;
+        return "Basic " + Base64.getEncoder().encodeToString(credentials.getBytes());
+    }
+    
+    static public String fetchNewAccessToken_CCGrant() throws Exception{
+    	 String accessToken = null;
+         String refreshToken = null;
+
+         // Create an HTTP client
+         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+             // Prepare the HTTP request
+             HttpPost httpPost = new HttpPost(idcsTokenEndpoint);
+             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+             String encoded = createBasicAuthHeader(CLIENT_ID, CLIENT_SECRET);
+             httpPost.setHeader("Authorization",  encoded);
+             
+             // Set the grant type and JWT assertion as form parameters
+             String requestBody = "grant_type=" +CC_GRANT +
+                     "&scope=" + SCOPE;
+             httpPost.setEntity(new StringEntity(requestBody));
+
+             // Execute the request and obtain the response
+             CloseableHttpResponse response = httpClient.execute(httpPost);
+
+             // Handle the response
+             try {
+                 HttpEntity entity = response.getEntity();
+                 if (entity != null) {
+                     String responseBody = EntityUtils.toString(entity);
+                     System.out.println("Token Response: " + responseBody);
+                     MapWrapper<String, Object> inputMap = (MapWrapper<String, Object>) JSONParser.slurp(responseBody);
+                     accessToken = inputMap.getString("access_token");
+                     System.out.println("access token=\n"+accessToken);
+                     String token_type = inputMap.getString("token_type");
+                     System.out.println("token_type=\n"+token_type);
+                     Integer expires_in = inputMap.getInteger("expires_in");
+                     System.out.println("expires_in=\n"+expires_in);
+                 }
+             } finally {
+                 response.close();
+             }
+             return accessToken;
+         }
+         
+    }
+    
+    static public String fetchNewAccessToken_PasswordGrant() {
+   	 String accessToken = null;
+        String refreshToken = null;
+        CloseableHttpClient httpClient = null;
+        // Create an HTTP client
+        try  {
+        	httpClient = HttpClients.createDefault();
+        	//httpClient = ProxyHttpClient.getClient(); //To establish connection with proxy
+            // Prepare the HTTP request
+            HttpPost httpPost = new HttpPost(idcsTokenEndpoint);
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+            String encoded = createBasicAuthHeader(CLIENT_ID, CLIENT_SECRET);
+            httpPost.setHeader("Authorization",  encoded);
+            
+            // Set the grant type and JWT assertion as form parameters
+            String requestBody = "grant_type=" + PASSWORD_GRANT +
+            		"&username="+USERNAME+"&password="+PASSWORD+
+            		"&scope=" + SCOPE;
+            httpPost.setEntity(new StringEntity(requestBody));
+
+            // Execute the request and obtain the response
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+
+            // Handle the response
+            try {
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    String responseBody = EntityUtils.toString(entity);
+                    System.out.println("Token Response: " + responseBody);
+                    MapWrapper<String, Object> inputMap = (MapWrapper<String, Object>) JSONParser.slurp(responseBody);
+                    accessToken = inputMap.getString("access_token");
+                    refreshToken= inputMap.getString("refresh_token");
+                    System.out.println("access token=\n"+accessToken);
+                    System.out.println("refresh token=\n"+refreshToken);
+                }
+            } finally {
+                response.close();
+            }
+            return accessToken;
+        }catch (Exception ee) {
+        	ee.printStackTrace();
+        }
+        return null;
+        
+   }
+    
+    
+    static public String fetchNewAccessToken_JWTUserGrantNoSig() throws Exception{
+    	String accessToken = null;
+  
+        // Load your private key
+        RSAPrivateKey privateKey = loadPrivateKey(PRIVATE_KEY_PATH);
+
+        // Prepare a JWT assertion
+        //SignedJWT userJwtAssertion = createJWTAssertion(CLIENT_ID, privateKey, USER_SUBJECT);
+        //String userAssertion = URLEncoder.encode(userJwtAssertion.serialize(), "UTF-8");
+        String userJwtAssertion = createJWTAssertion2(CLIENT_ID, privateKey, USER_SUBJECT);
+        String userAssertion = URLEncoder.encode(userJwtAssertion, "UTF-8");
+        
+        System.out.println("userJwtAssertion=\n"+ userAssertion);
+
+        // Create an HTTP client
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            // Prepare the HTTP request
+            HttpPost httpPost = new HttpPost(idcsTokenEndpoint);
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+            String encoded = createBasicAuthHeader(CLIENT_ID, CLIENT_SECRET);
+            httpPost.setHeader("Authorization",  encoded);
+            
+            // Set the grant type and JWT assertion as form parameters
+            String requestBody = "grant_type=" + JWT_USER_GRANT +
+                    "&assertion=" + userAssertion +
+                    "&scope=" + SCOPE;
+            httpPost.setEntity(new StringEntity(requestBody));
+
+            // Execute the request and obtain the response
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+
+            // Handle the response
+            try {
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    String responseBody = EntityUtils.toString(entity);
+                    System.out.println("Token Response: " + responseBody);
+                    MapWrapper<String, Object> inputMap = (MapWrapper<String, Object>) JSONParser.slurp(responseBody);
+                    accessToken = inputMap.getString("access_token");
+                    System.out.println("access token=\n"+accessToken);
+                   
+                }
+            } finally {
+                response.close();
+            }
+        }
+        return accessToken;
+           
+      }
+    
+    
+    
+    static public String fetchNewAccessToken_JWTUserGrant() throws Exception{
+    	String accessToken = null;
+  
+        // Load your private key
+        RSAPrivateKey privateKey = loadPrivateKey(PRIVATE_KEY_PATH);
+
+        // Prepare a JWT assertion
+        SignedJWT userJwtAssertion = createJWTAssertion(CLIENT_ID, privateKey, USER_SUBJECT);
+        String userAssertion = URLEncoder.encode(userJwtAssertion.serialize(), "UTF-8");
+
+        System.out.println("userAssertion=\n"+ userAssertion);
+
+        // Create an HTTP client
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            // Prepare the HTTP request
+            HttpPost httpPost = new HttpPost(idcsTokenEndpoint);
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+            String encoded = createBasicAuthHeader(CLIENT_ID, CLIENT_SECRET);
+            httpPost.setHeader("Authorization",  encoded);
+            
+            // Set the grant type and JWT assertion as form parameters
+            String requestBody = "grant_type=" + JWT_USER_GRANT +
+                    "&assertion=" + userAssertion +
+                    "&scope=" + SCOPE;
+            httpPost.setEntity(new StringEntity(requestBody));
+
+            // Execute the request and obtain the response
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+
+            // Handle the response
+            try {
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    String responseBody = EntityUtils.toString(entity);
+                    System.out.println("Token Response: " + responseBody);
+                    MapWrapper<String, Object> inputMap = (MapWrapper<String, Object>) JSONParser.slurp(responseBody);
+                    accessToken = inputMap.getString("access_token");
+                    System.out.println("access token=\n"+accessToken);
+                   
+                }
+            } finally {
+                response.close();
+            }
+        }
+        return accessToken;
+           
+      }
+    
+    
+
+   
+    static public String fetchNewAccessToken_JWTCCGrant() throws Exception{
+    	String accessToken = null;
+  
+        // Load your private key
+        RSAPrivateKey privateKey = loadPrivateKey(PRIVATE_KEY_PATH);
+
+        // Prepare a JWT assertion
+        SignedJWT userJwtAssertion = createJWTAssertion(CLIENT_ID, privateKey, USER_SUBJECT);
+        
+        String userAssertion = URLEncoder.encode(userJwtAssertion.serialize(), "UTF-8");
+        System.out.println("userJwtAssertion=\n"+ userAssertion);
+        
+        SignedJWT clientJwtAssertion = createJWTAssertion(CLIENT_ID, privateKey, CLIENT_SUBJECT);
+        String clientAssertion = URLEncoder.encode(clientJwtAssertion.serialize(), "UTF-8");
+        System.out.println("clientJwtAssertion=\n"+ clientAssertion);
+
+        // Create an HTTP client
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            // Prepare the HTTP request
+            HttpPost httpPost = new HttpPost(idcsTokenEndpoint);
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+            //String encoded = createBasicAuthHeader(CLIENT_ID, CLIENT_SECRET);
+            //httpPost.setHeader("Authorization",  encoded);
+            
+            // Set the grant type and JWT assertion as form parameters
+            String requestBody = "grant_type=" + JWT_CC_GRANT +
+                    "&assertion=" + userAssertion +
+                    "&client_id="+CLIENT_ID +
+                    "&client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer"+
+                    "&client_assertion=" + clientAssertion +
+                    "&scope=" + SCOPE;
+            httpPost.setEntity(new StringEntity(requestBody));
+
+            // Execute the request and obtain the response
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+
+            // Handle the response
+            try {
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    String responseBody = EntityUtils.toString(entity);
+                    System.out.println("Token Response: " + responseBody);
+                    MapWrapper<String, Object> inputMap = (MapWrapper<String, Object>) JSONParser.slurp(responseBody);
+                    accessToken = inputMap.getString("access_token");
+                    System.out.println("access token=\n"+accessToken);
+                   
+                }
+            } finally {
+                response.close();
+            }
+        }
+        return accessToken;
+           
+      }
+    
+    
+    
+    
+    
+    static public MapWrapper getAdminList(String accessToken) throws Exception{
+    	Date startTime = new Date();
+    	CloseableHttpClient httpclient = null;
+		HttpPost httpPost = null;
+		MapWrapper responseJSONData = null;	
+		String serverURL = UNIFIER_SERVER+ ADMINUSER_ENDPOINT;
+		String task = "getAdminList unifierURL="+ serverURL;
+		//String accessToken = null;
+    	try {	   
+    		
+	  
+	    	//Send status request for all the new instances
+    		System.out.println("startTime: "+ startTime+ ", "+ task);
+    		httpclient = HttpClients.createDefault();
+    		//httpclient = ProxyHttpClient.getClient(); //To establish connection with proxy
+			//logger.debug(" getStatusFromOICURL  Tenant Id================="+Tenant.getTenant().getId());
+			httpPost = new HttpPost(serverURL);
+			httpPost.setHeader("Authorization", "Bearer " + accessToken);	
+		
+			StringEntity payload = null;
+			MapWrapper<String,String> map = new MapWrapper<String, String>();
+			map.put("filterCondition", "uuu_user_status=1");
+			payload = new StringEntity(map.toString());
+			httpPost.setEntity(payload);
+			httpPost.setHeader("Content-Type", "application/json");
+
+			//String basicAuth = createBasicAuthHeader(USERNAME, PASSWORD);
+			//httpGet.setHeader("Authorization", basicAuth);	
+			HttpResponse httpResponse = httpclient.execute(httpPost);
+			System.out.println("response headers = "+ httpResponse.getAllHeaders().toString());
+			System.out.println("status code="+ httpResponse.getStatusLine().getStatusCode());
+			System.out.println("status line="+ httpResponse.getStatusLine().toString());
+			System.out.println("status reason phrase="+ httpResponse.getStatusLine().getReasonPhrase());
+			
+			if(httpResponse.getStatusLine().getStatusCode() ==  HttpStatus.SC_NOT_FOUND){
+				//In general if we have instance id it is definite that we will get status of the instance.
+				//So to avoid delay in OIC system update issue, adding this code to skip the update and wait till user triggers again to get the status
+				//Instance Id not present use-case is already taken care above.
+				System.out.println( httpResponse.getStatusLine().getStatusCode());
+				System.out.println("getAdminList Failed : HTTP error code : " + httpResponse.getStatusLine().getStatusCode() + " Error: "
+						+ httpResponse.getStatusLine().toString()+"  reason phrase "+httpResponse.getStatusLine().getReasonPhrase());
+				System.out.println("Skipping and retrying on refresh button to get the latest status as instance id is present");
+			}
+			else if(httpResponse.getStatusLine().getStatusCode() !=  HttpStatus.SC_OK){
+				//If there is an issue with getting job status from OPC
+				System.out.println("getAdminList Failed : HTTP error code : " + httpResponse.getStatusLine().getStatusCode() + " Error: "
+						+ httpResponse.getStatusLine().toString()+"  reason phrase "+httpResponse.getStatusLine().getReasonPhrase());
+				
+			} else {
+				System.out.println("Successfully fetched status of instance id from OIC");	
+				HttpEntity entity = httpResponse.getEntity(); 		
+				if (entity != null) { 
+					String 	entityStr = EntityUtils.toString(entity); 
+					System.out.println("getAdminList, entityStr = "+ entityStr);
+					//responseJSONData = (MapWrapper) JSONParser.parse(entityStr); 
+					//String status = responseJSONData.getString("status");
+					//String endTime = responseJSONData.getString("processingEndDate");	
+				}
+			}
+			
+	    	
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	} finally {
+    		if(httpclient != null)
+    			httpclient.close();
+    		if(httpPost != null)
+    			httpPost.releaseConnection();
+		}
+    	endTime(task, startTime);
+    	return responseJSONData;
+    	
+    }
+    
+    
+    private static long endTime(String task, Date startTime) {
+		Date endTime = new Date();
+		long startMS = startTime.getTime();
+		long timeSpent = System.currentTimeMillis() - startMS;
+		System.out.println("===============================");
+		System.out.println(task);
+		System.out.println("took  :::::::::::  "+ (System.currentTimeMillis() - startMS) + " ms.");
+		System.out.println("===============================");
+		return timeSpent;
+	}
+
+    
+    private static void testConection(String grantType) {
+    	System.out.println("Grant type = "+ grantType);
+        String accessToken=null;
+        try {
+	    	switch (grantType) {
+	           case "password":  
+	              accessToken=fetchNewAccessToken_PasswordGrant();
+	              break;
+	                    
+	           case "client_credentials":  
+	               accessToken=fetchNewAccessToken_CCGrant();
+	               break;
+	               
+	           case "jwt_cc":  
+	               accessToken=fetchNewAccessToken_JWTCCGrant();
+	               break;
+	               
+	           case "jwt_user":  
+	               accessToken=fetchNewAccessToken_JWTUserGrant();
+	               break;
+	               
+	           case "jwt_user_nosig":  
+	               accessToken=fetchNewAccessToken_JWTUserGrantNoSig();
+	               break;    
+	    	}
+	        System.out.println("access token=\n"+accessToken);
+	        System.out.println("\n-----------------------------------------\n");
+	        getAdminList(accessToken);
+	        System.out.println("\n=========================================\n");
+        }catch (Exception e) {
+        	e.printStackTrace();
+        }
+	}
+    
+  
+    
+}
+
